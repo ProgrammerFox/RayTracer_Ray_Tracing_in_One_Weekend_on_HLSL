@@ -70,11 +70,15 @@
 	</objects>
 	<cameras />
 	<settings>
+		<entry type="property" name="Simple" item="pipe" />
+		<entry type="file" name="Compute" shader="cs" />
+		<entry type="file" name="Simple" shader="vs" />
+		<entry type="file" name="Simple" shader="ps" />
 		<entry type="pinned" name="reBound" owner="Compute" />
 		<entry type="camera" fp="false">
 			<distance>3</distance>
-			<pitch>-7</pitch>
-			<yaw>350</yaw>
+			<pitch>-9</pitch>
+			<yaw>11</yaw>
 			<roll>360</roll>
 		</entry>
 		<entry type="clearcolor" r="0" g="0" b="0" a="0" />

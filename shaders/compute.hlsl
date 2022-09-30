@@ -199,8 +199,8 @@ struct Camera
 		float3 look_to = 0;
 		float3 vup = float3(0, 1, 0);
 		
-		//float aspect_ratio = uv.x / uv.y;
-		float h = 1;//tan(1.57f / 2);
+		
+		float h = 1;
 		float viewport_height = 2.0 * h;
         float viewport_width = viewport_height;
 	
@@ -259,9 +259,6 @@ struct Material
 			float ir = LayersValue.w;
 			float refraction_ratio = rec.FrontFace ? (1.0 / ir) : ir;
 
-			//float aaa = 1.0 / ir;
-
-            //float3 unit_direction = unit_vector(r_in.direction());
             double cos_theta = min(dot(-rd, rec.Normal), 1.0);
             double sin_theta = sqrt(1.0 - cos_theta * cos_theta);
 
@@ -353,12 +350,12 @@ float3 ray_color(float3 ro, float3 rd, float2 uv, Random rand)
 	uint SpheresCount, BoxesCount, tmp1;
 	Spheres.GetDimensions(SpheresCount, tmp1);
 	Boxes.GetDimensions(BoxesCount, tmp1);
-	//HitRecord rec;
+	
 	
 	float3 resColor = 1;
 	
 	float lostray = 1;
-	//bool raywaslost = false;
+	
 	
 	int rBound = reBound;
 	if(rBound < 1) rBound = 1;
@@ -380,26 +377,18 @@ float3 ray_color(float3 ro, float3 rd, float2 uv, Random rand)
 			float4 mat_col = Materials[rec.MatIdx].Color;
 			resColor = resColor * mat_col.xyz;
 			if(mat_col.w >= 1.0f) return resColor;
-			//return Materials[Spheres[res.MatIdx].MaterialIndex.x].Color;
+			
 		}
 		else break;
 
 		
 		
-		//if(i >= rBound - 1) lostray = 0;
+		
 	}
 	HitRecord rec;
-	//if(WorldHit(ro, rd, SpheresCount, BoxesCount, rec)) return 0;
 	
-	//if(lastindex >= rBound - 1) lostray = 0;
+	return 0; //if empty space
 	
-	//for(int i = 0; i < SpheresCount; i++)
-	//{
-	//	if(SphereHit(ro, rd, Spheres[i].Geometry, rec)) return 0;
-	//}
-	
-	return 0;
-	//return resColor * 0;
 	float t = 0.5f * (rd.y + 1);
 	return (resColor * ((1 - t) * float3(1) + t * float3(0.2f, 0.4f, 1))) * lostray;
 }
