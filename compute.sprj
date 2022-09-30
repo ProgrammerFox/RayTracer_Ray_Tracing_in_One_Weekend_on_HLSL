@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<project version="2">
+	<pipeline>
+		<pass name="Compute" type="compute" active="true">
+			<shader type="cs" path="shaders\compute.hlsl" entry="main" />
+			<groupsize x="120" y="68" z="1" />
+			<variables>
+				<variable type="float" name="roll" system="Time" />
+				<variable type="float4" name="CamPos" system="CameraPosition" />
+				<variable type="float2" name="ScrSize" system="ViewportSize" />
+				<variable type="float4" name="LastCamPos" lastframe="true" system="CameraPosition" />
+				<variable type="int" name="reBound">
+					<row>
+						<value>7</value>
+					</row>
+				</variable>
+			</variables>
+			<macros />
+		</pass>
+		<pass name="Simple" type="shader" active="true">
+			<shader type="vs" path="shaders\ScreenQuadVS.hlsl" entry="main" />
+			<shader type="ps" path="shaders\ScreenQuadPS.hlsl" entry="main" />
+			<inputlayout>
+				<item value="Position" semantic="POSITION" />
+				<item value="Texcoord" semantic="TEXCOORD0" />
+			</inputlayout>
+			<rendertexture />
+			<items>
+				<item name="ScreenQuad" type="geometry">
+					<type>ScreenQuadNDC</type>
+					<width>1</width>
+					<height>1</height>
+					<depth>1</depth>
+					<topology>TriangleList</topology>
+				</item>
+				<item name="Cube" type="geometry">
+					<type>Cube</type>
+					<width>1</width>
+					<height>1</height>
+					<depth>1</depth>
+					<scaleX>2</scaleX>
+					<scaleY>2</scaleY>
+					<scaleZ>2</scaleZ>
+					<topology>TriangleList</topology>
+				</item>
+			</items>
+			<itemvalues />
+			<macros />
+		</pass>
+	</pipeline>
+	<objects>
+		<object type="image" name="ComputeOutput" width="1280" height="1024" format="R32G32B32A32_FLOAT">
+			<bind slot="0" name="Compute" uav="1" />
+			<bind slot="0" name="Simple" uav="0" />
+		</object>
+		<object type="buffer" name="Spheres" size="128" format="float4;int4" pausedpreview="false">
+			<bind slot="1" name="Compute" />
+		</object>
+		<object type="buffer" name="Material" size="224" format="float4;float4" pausedpreview="false">
+			<bind slot="2" name="Compute" />
+		</object>
+		<object type="image" name="Output" width="1280" height="1024" format="R32G32B32A32_FLOAT">
+			<bind slot="3" name="Compute" uav="1" />
+			<bind slot="1" name="Simple" uav="0" />
+		</object>
+		<object type="buffer" name="BVH_Node" size="48" format="float4;float4;int4" pausedpreview="false" />
+		<object type="buffer" name="Boxes" size="384" format="float4;float4;int4;" pausedpreview="false">
+			<bind slot="4" name="Compute" />
+		</object>
+	</objects>
+	<cameras />
+	<settings>
+		<entry type="pinned" name="reBound" owner="Compute" />
+		<entry type="camera" fp="false">
+			<distance>3</distance>
+			<pitch>-7</pitch>
+			<yaw>350</yaw>
+			<roll>360</roll>
+		</entry>
+		<entry type="clearcolor" r="0" g="0" b="0" a="0" />
+		<entry type="usealpha" val="false" />
+	</settings>
+	<plugindata />
+</project>
